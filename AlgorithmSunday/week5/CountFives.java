@@ -1,4 +1,4 @@
-package week5;
+package AlgorithmSunday.week5;
 
 public class CountFives {
     private static int sum;

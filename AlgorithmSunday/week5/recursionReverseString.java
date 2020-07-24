@@ -1,4 +1,4 @@
-package week5;
+package AlgorithmSunday.week5;
 
 import java.util.LinkedList;
 

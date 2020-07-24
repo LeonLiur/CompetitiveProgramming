@@ -1,4 +1,4 @@
-package week4.hw;
+package AlgorithmSunday.week4.hw;
 
 import java.util.Scanner;
 import java.util.Stack;
