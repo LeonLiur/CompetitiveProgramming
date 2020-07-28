@@ -1,4 +1,4 @@
-package Problems;
+package Problems.CCC;
 
 import java.util.Scanner;
 import java.util.TreeMap;

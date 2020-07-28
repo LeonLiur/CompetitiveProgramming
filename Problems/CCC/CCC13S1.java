@@ -1,4 +1,4 @@
-package Problems;
+package Problems.CCC;
 
 import java.util.Arrays;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package Problems;
+package Problems.CCC;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
