@@ -1,0 +1,102 @@
+Today: More on graphs
+
+Last Class: Depth First Search
+
+Bread First Search
+Searching algorithms on a graph generally determin:
+
+1) Whether a specific node is connected to the node we are starting with
+2) Search for whether or not a node is present in the graph
+	-e.g. Graph nodes are represented by numbers
+  
+
+BFS Algorithm:
+
+// adjancecy list represented as array of arraylist
+
+bool bfs(int start, int target) {
+
+  vector<int> adj [maxN] // take advantage of the fact we have access to constraints
+
+  queue<int> q; // queue of nodes
+  // how to make sure we don't visit already visited nodes?
+  // If not in competitive programming, use a set of visited nodes
+  // Set tells you if an element is in it in amortized O(1) time
+  // predetermine the size of your visited array
+
+  bool visited[maxN]
+  q.push_back(start);
+  visited[start] = true;
+
+  while(!q.empty()) {
+
+    int cur_node = q.front();
+    q.pop();
+
+    if(cur_node == target) {
+        return true;
+    }
+    
+    for(int neighbour : adj[cur_node) {
+      if(!visited[neighbour]) { // conditional check
+       	visited[neighbour] = true;
+        q.push_back(neighbour);
+      }
+    }
+  }
+  return false;
+}
+                            
+When to use BFS vs DFS? 
+
+                            
+A common case where DFS fails:
+                            
+You're placed on a grid on some starting square (x,y);
+Bunch of restrictions on how you can move etc
+How many moves does it take to reach this end square. 
+
+
+
+void dfs(int cur, int prev) { 
+  
+  // add logic here
+  v[cur] = true;
+  for(int neighbour : adj[cur] ) {
+   	if(!v[neighbour])
+      	dfs(neighbour);
+  }
+  // add logic after recursion
+}
+
+Include this statement                           
+#include <bits/stdc++.h> 
+
+                            
+Datastructures:
+
+Arrays, Lists/vectors
+Hashmaps, Sets
+Queues, Stacks
+Sometimes will need to make your own class
+                            
+                            
+Algorithms:
+Recursion
+Sorting (Understand time complexity and when to use)
+String processing
+BFS + DFS
+                            
+
+Haven't Dicussed:
+Dynamic Programming:
+Recursion with array caching
+                            
+External Resources for Competitive Programming:
+                            
+USACO: series of training videos/problems
+TopCoder and HackerEarth
+GeeksForGeeks
+                            
+                            
+                            
