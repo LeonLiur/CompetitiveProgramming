@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class PrimTemplate {
     private static boolean[] mstSet;
-    private static int[] parent;
     private static int[] lowCost;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,7 +21,7 @@ public class PrimTemplate {
 
         mstSet = new boolean[V];
 
-        parent = new int[V];
+        int[] parent = new int[V];
         Arrays.fill(parent, -1);
 
         lowCost = new int[V];
