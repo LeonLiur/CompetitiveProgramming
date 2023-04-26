@@ -1,3 +1,0 @@
-https://dmoj.ca/problem/ccc17s2
-https://dmoj.ca/problem/bts18p2 // maps
-Catch in C++
