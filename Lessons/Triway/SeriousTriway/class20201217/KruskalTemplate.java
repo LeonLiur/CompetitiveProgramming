@@ -1,9 +1,6 @@
-package Algorithms.Kruskal;
+package Triway.SeriousTriway.class20201217;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class KruskalTemplate {
     public static int[] parent;

@@ -1,0 +1,6 @@
+Today's CCC problem: https://dmoj.ca/problem/ccc15s3
+Status: don't know what to do, cannot think of anything [blank]
+
+Watched Youtube solution: hard to think but easy to code, however still TLE's
+Not TLE: hard, have to use Treeset..?
+
