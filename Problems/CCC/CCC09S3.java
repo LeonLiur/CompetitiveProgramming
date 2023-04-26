@@ -1,4 +1,4 @@
-package Algorithms;
+package Problems.CCC;
 
 import java.util.LinkedList;
 import java.util.Queue;

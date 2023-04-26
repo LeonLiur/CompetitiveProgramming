@@ -1,48 +1,97 @@
 package Problems.CCC;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-public class CCC13S4 {
-    private static int[] parents;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+public class CCC13S4{  
 
-        parents = new int[n + 1];
-        Arrays.fill(parents, -1);
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static PrintWriter pr = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+	static StringTokenizer st;
 
-        for (int i = 0; i < m; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            parents[b] = a;
+    static int N, M, P, Q;
+    static Graph g;
+    static boolean[] visited;
+
+    static class Graph{
+        long E;
+        int V;
+        ArrayList<Integer>[] adj;
+
+        public Graph(long E, int V){
+            this.E = E;
+            this.V = V;
+            adj = new ArrayList[V + 1];
+            for(int i = 0; i < V + 1; i++){
+                adj[i] = new ArrayList<Integer>();
+            }
         }
 
-        st = new StringTokenizer(br.readLine());
-        int p = Integer.parseInt(st.nextToken());
-        int q = Integer.parseInt(st.nextToken());
+        public void addEdge(int s, int d){
+            adj[s].add(d);
+        }
+    }
 
-        int fp = find(p);
-        if(fp > q){
+	public static void main(String[] args) throws IOException{
+        int N = readInt();
+        long M = readInt();
+
+        g = new Graph(M, N);
+        for(int i = 0; i < M; i++){
+            int a = readInt();
+            int b = readInt();
+
+            g.addEdge(a, b);
+        }
+        
+        int p = readInt();
+        int q = readInt();
+        visited = new boolean[N+1];
+        boolean a = dfs(p, q);
+        visited = new boolean[N+1];
+        boolean b = dfs(q, p);
+
+
+        if(a){
             System.out.println("yes");
-        }else if(fp == q){
-            System.out.println("unknown");
-        }else{
+        }else if (b){
             System.out.println("no");
+        }else{
+            System.out.println("unknown");
         }
+	}
+    
+    private static boolean dfs(int cur, int tar){
+        boolean res = false;
+        if(cur == tar)    return true;
+        visited[cur] = true;
+        for(int x : g.adj[cur]){
+            if(!visited[x]){
+                res = res || dfs(x, tar);
+            }
+        }
+        return res;
     }
 
-    private static int find(int i){
-        if(parents[i] == -1){
-            return -1;
-        }
-        return find(parents[i]);
-    }
+
+	static String next () throws IOException {
+		while (st == null || !st.hasMoreTokens())
+			st = new StringTokenizer(br.readLine().trim());
+		return st.nextToken();
+	}
+	static long readLong () throws IOException {
+		return Long.parseLong(next());
+	}
+static int readInt () throws IOException {
+		return Integer.parseInt(next());
+	}
+	static double readDouble () throws IOException {
+		return Double.parseDouble(next());
+	}
+	static char readCharacter () throws IOException {
+		return next().charAt(0);
+	}
+	static String readLine () throws IOException {
+		return br.readLine().trim();
+	}
 }

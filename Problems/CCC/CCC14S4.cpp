@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define endl "\n"
+#define mp make_pair
+#define pb push_back
+#define boost() cin.tie(0), cin.sync_with_stdio(0)
+typedef long long ll;
+typedef vector<int> vi;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+
+const int maxi = 2147483647;
+const int mini = -2147483647;
+
+const int MN = 1005;
+int n, q, x1, y1, x2, y2;
+ll v, threshold, diff[MN][MN];
+
+// lightning mcqueen kawchaw
+int main()
+{
+    boost();
+
+    cin >> n >> threshold;
+    while(n--){
+        cin >> x1 >> y1 >> x2 >> y2 >> v;
+        diff[x1][y1] += v;
+        diff[x1][y2 + 1] -= v;
+        diff[x2 + 1][y1] -= v;
+        diff[x2 + 1][y2 + 1] += v;
+    }
+
+    ll count = 0;
+    for(int i = 0; i < ; i++)
+    
+
+    return 0;
+}

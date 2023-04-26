@@ -1,98 +1,145 @@
 package Problems.CCC;
 
-/*
- * Click `Run` to execute the snippet below!
- */
-
 import java.io.*;
 import java.util.*;
 
-
 public class CCC16S3 {
+    static class Graph{
+        int E, V;
+        ArrayList<Integer>[] adjList;
+        boolean[] valid;
+        boolean[] phoList;
+        int[] dist;
+        int phoExample = -1;
+        int maxDistance1 = -1;
+        int maxDistance2 = -1;
+        int maxDistanceIndex = -1;
+        int maxDistanceIndex2 = -1;
+        ArrayList<Integer> optimal;
+        int optimalCount = 0;
 
-    //https://pastebin.com/LTr0dLnN <-- DFS code
-    static ArrayList<Integer> graph[];
-    static int restaurants[];
-    static boolean isARestaurant[];
-    static int rt;
-    static int par[];
-    static boolean isPartOfTree[];
-    static int dist[];
-
-    static void dfs1(int n){
-        for(int e : graph[n]){
-            if(e != par[n]){
-                par[e] = n;
-                dfs1(e);
+        public Graph(int E, int V){
+            this.E = E;
+            this.V = V;
+            adjList = new ArrayList[V];
+            for(int i = 0; i < V; i++){
+                adjList[i] = new ArrayList<Integer>();
             }
+            valid = new boolean[V];
+            phoList = new boolean[V];
+            dist = new int[V];
+            optimal = new ArrayList<Integer>();
         }
+
+        public void addPho(int pho){
+            phoList[pho] = true;
+            phoExample = pho;
+        }
+
+        public void addEdge(int src, int dest){
+            adjList[src].add(dest);
+            adjList[dest].add(src);
+        }
+
+
+        private boolean prune(int cur, int par){
+            boolean m = false;
+            if(phoList[cur])    m = true;
+            for(int x : adjList[cur])   if(x != par)    m = prune(x, cur) || m;
+            
+            return valid[cur] = m;
+        }
+
+        private void dfs(int cur, int par, int distance){
+            dist[cur] = distance;
+            maxDistance1 = Math.max(maxDistance1, distance);
+            if(maxDistance1 == distance)    maxDistanceIndex = cur;
+            for(int x : adjList[cur])   if(x!= par && valid[x]) dfs(x, cur, distance + 1);
+        }
+
+        private void dfs2(int cur, int par, int distance){
+            dist[cur] = distance;
+            maxDistance2 = Math.max(maxDistance2, distance);
+            if(maxDistance2 == distance)    maxDistanceIndex2 = cur;
+            
+            for(int x : adjList[cur])   if(x!= par && valid[x]) dfs2(x, cur, distance + 1);
+        }
+
+        private boolean dfs3(int cur, int par, int tar){
+            optimal.add(cur);
+            if(phoList[cur])    optimalCount++;
+            if(cur == tar)  return true;
+
+            boolean m = false;
+
+            for(int x : adjList[cur]){
+                if(x != par && valid[x]){
+                    m = dfs3(x, cur, tar) || m;
+                }
+            }
+
+            if(m)   return true;
+            optimal.remove(Integer.valueOf(cur));
+            if(phoList[cur])    optimalCount--;
+            return false;
+        }
+
+        private void clear(){
+            dist = new int[V];
+        }
+
+        
+    }
+    public static void main(String[] args) throws IOException{
+        int N, M, validCount = 0;
+        N = readInt();
+        M = readInt();
+        Graph g = new Graph(N-1, N);
+        for(int i = 0; i < M; i++)  g.addPho(readInt());
+        for(int i = 0; i < N - 1; i++)  g.addEdge(readInt(), readInt());
+
+        g.prune(g.phoExample, -1);
+
+        g.dfs(g.phoExample, -1, 0);
+        // System.out.println("EXAMPLE: " + g.phoExample);
+        for(int i = 0; i < g.valid.length; i++) validCount+=g.valid[i]?1:0;
+
+        g.clear();
+
+        g.dfs2(g.maxDistanceIndex, -1, 0);
+
+        g.dfs3(g.maxDistanceIndex, -1, g.maxDistanceIndex2);
+
+        // System.out.println(g.optimal);
+
+
+
+        System.out.println(validCount * 2 - (g.maxDistance2 + 2));
     }
 
-    static void dfs2(int n){
-        for(int e : graph[n]){
-            if(isPartOfTree[e] && dist[e] > dist[n] + 1){
-                dist[e] = dist[n] + 1;
-                dfs2(e);
-            }
-        }
-    }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt(), M = sc.nextInt();
-        restaurants = new int[M];
-        isARestaurant = new boolean[N];
-        for(int i = 0; i<M; i++){
-            int n = sc.nextInt();
-            restaurants[i] = n;
-            isARestaurant[n] = true;
-        }
-        graph = new ArrayList[N];
-        for(int i = 0; i<N; i++){
-            graph[i] = new ArrayList<>();
-        }
-        for(int i = 0; i<N-1; i++){
-            int a = sc.nextInt(), b = sc.nextInt();
-            graph[a].add(b);
-            graph[b].add(a);
-        }
-        rt = restaurants[0];
-        par = new int[N];
-        isPartOfTree = new boolean[N];
-        isPartOfTree[rt] = true;
-        par[0] = -1;
-        dfs1(rt);
-        int numberOfNodesInNewTree = 1;
-        for(int k : restaurants){
-            int c = k;
-            while(!isPartOfTree[c]){
-                isPartOfTree[c] = true;
-                numberOfNodesInNewTree++;
-                c = par[c];
-            }
-        }
-        dist = new int[N];
-        Arrays.fill(dist, 3*N);
-        dist[rt] = 0;
-        dfs2(rt);
-        int d1 = restaurants[0];
-        for(int i = 0; i<N; i++){
-            if(isPartOfTree[i] && dist[d1] < dist[i]){
-                d1 = i;
-            }
-        }
-        Arrays.fill(dist, 3*N);
-        dist[d1] = 0;
-        dfs2(d1);
-        int d2 = restaurants[0];
-        for(int i = 0; i<N; i++){
-            if(isPartOfTree[i] && dist[d2] < dist[i]){
-                d2 = i;
-            }
-        }
-        //System.out.println(numberOfNodesInNewTree);
-        //System.out.println(dist[d2]);
-        System.out.println(numberOfNodesInNewTree*2 - 2 - dist[d2]);
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static PrintWriter pr = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+    static StringTokenizer st;
+
+    static String next () throws IOException {
+        while (st == null || !st.hasMoreTokens())
+            st = new StringTokenizer(br.readLine().trim());
+        return st.nextToken();
+    }
+    static long readLong () throws IOException {
+        return Long.parseLong(next());
+    }
+    static int readInt () throws IOException {
+        return Integer.parseInt(next());
+    }
+    static double readDouble () throws IOException {
+        return Double.parseDouble(next());
+    }
+    static char readCharacter () throws IOException {
+        return next().charAt(0);
+    }
+    static String readLine () throws IOException {
+        return br.readLine().trim();
     }
 }
-
